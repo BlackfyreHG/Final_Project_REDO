@@ -29,7 +29,7 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,5000000])
+                .domain([0,50000000])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
     changeXticks(margins,graph,svg,xScale);
@@ -162,8 +162,11 @@ var bindDataToRect = function(row) //appends energy and column data to the d3 ge
 
 var scaleValue = function(source) //Removes inflation made to source data to make rectangle appear larger. 
 {
-    if(source == "construction"){
+    if(source == "Construction"){
         return 1;
+    }
+    else if(source == "Human"){
+        return 10;
     }
     else{
         return 100;
