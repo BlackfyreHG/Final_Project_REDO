@@ -357,7 +357,7 @@ var  getNewYscale = function(graph,margins,series,id)
 }
 
 //d3.json("https://blackfyrehg.github.io/Final_Project/emissions_by_sector.json");
-var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project/stack_data.json");
+var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/re_stacked.json");
 stackPromise.then(function(stack_data) {
     drawStack(stack_data,1200,550);
     
