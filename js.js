@@ -29,7 +29,7 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,5000000000])
+                .domain([0,5000000])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
     changeXticks(margins,graph,svg,xScale);
@@ -102,7 +102,7 @@ var drawStack = function(datas,width,height)
             .style("left",xpos+"px")
             .style("top",ypos+"px")
             .select("#energy").text(getString(data));
-        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]-adjustValue(data["column"]))+" "
+        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]/scaleValue(source))+" "
             +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
         
         d3.select("#tooltip").select("#type").text("Cost Type: "+suffix(data.source));
@@ -157,6 +157,16 @@ var bindDataToRect = function(row) //appends energy and column data to the d3 ge
     {
         row[i]["source"] = row.key;
         row[i]["column"] = i;
+    }
+}
+
+var scaleValue = function(source) //Removes inflation made to source data to make rectangle appear larger. 
+{
+    if(source == "construction"){
+        return 1;
+    }
+    else{
+        return 100;
     }
 }
 

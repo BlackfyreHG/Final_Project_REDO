@@ -1,7 +1,7 @@
-[{"Construction":2796000, "Operation":800, "Fuel":588, "Human":46316},
-{"Construction":612000, "Operation":2000, "Fuel":742, "Human":94211},
-{"Construction":772000, "Operation":2000, "Fuel":588, "Human":57368},
-{"Construction":4271200, "Operation":1000, "Fuel":154, "Human":0},
-{"Construction":1835200, "Operation":200, "Fuel":0, "Human":526 },
-{"Construction":1516000, "Operation":200, "Fuel":0, "Human": 28421},
-{"Construction":2964000, "Operation":200, "Fuel":0, "Human":0}] 
+[{"Construction":2796000, "Operation":80000, "Fuel":58800, "Human":4631600},
+{"Construction":612000, "Operation":200000, "Fuel":74200, "Human":9421100},
+{"Construction":772000, "Operation":200000, "Fuel":58800, "Human":5736800},
+{"Construction":4271200, "Operation":100000, "Fuel":15400, "Human":0},
+{"Construction":1835200, "Operation":20000, "Fuel":0, "Human":52600},
+{"Construction":1516000, "Operation":20000, "Fuel":0, "Human": 2842100},
+{"Construction":2964000, "Operation":20000, "Fuel":0, "Human":0}] 
