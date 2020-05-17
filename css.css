@@ -1,0 +1,101 @@
+.fade {
+    opacity: 0.4;
+}
+
+body{
+    background-color:#E6E6FA;
+}
+svg {
+    border-style:double;
+    border-color:green;
+    border-width:10px;
+    margin: 20px;
+    background-color:white;
+}
+
+#title{
+    text-align:center;
+    margin:50px;
+    border-style:groove;
+    background-color:lightgrey;
+}
+
+h1{
+    font-size:45;
+    font-family:monospace;
+    color:green;
+    margin:50px;
+    border-style:dotted;
+}
+#title div{
+    text-align:center;
+    margin:20px;
+    border-style:groove;
+}
+
+#tooltip {
+    position: absolute;
+    right: 20px;
+    padding: 10px;
+    width: 150px;
+    background-color: #F0FFF0;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+    pointer-events:none;
+}
+.rect_label{
+    pointer-events:none;
+}
+#tooltip #energy {
+    font-weight:bold;
+    font-size:20;
+}
+.arc {
+    transition: opacity 400ms;
+    transition-timing-function: ease-in;
+}
+
+#sector{
+    font-family:inherit;
+    font-size:20;
+    font-weight:bold; 
+}
+.hidden {
+    display: none;
+}
+.selected {
+ 
+}
+
+#xticks {
+    font-size:15;
+    font-family:serif;
+}
+text {
+    font-size:14;
+    font-family:fantasy;
+    transition-timing-function: ease-in;
+}
+
+svg {
+    float: left;
+}
+#labelx{
+    font-size:20;
+
+}
+#labely{
+    font-size:25;
+}
+
+.yaxis .tick text{
+    font-size:16;
+}
+
+.selected {
+    filter: brightness(75%);
+}

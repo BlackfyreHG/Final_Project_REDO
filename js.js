@@ -57,10 +57,10 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,5000000000])
+                .domain([0,200])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
-    changeXticks(margins,graph,svg,xScale);
+    //changeXticks(margins,graph,svg,xScale);
     //---------------------------------------------------
     
     //gives axis labels. 
@@ -85,7 +85,7 @@ var drawStack = function(datas,width,height)
                     bindEnergyToRect(row); //Puts the same data class into each rectangles data as well
                     return row.key;})
                 .style("fill",function(d,i){
-                    return colors2[i];
+                    return colors[i];
                 });
     
     //Add a rectangle for each data value
@@ -97,6 +97,9 @@ var drawStack = function(datas,width,height)
                     return xScale(i)+1;
                 })
                 .attr("y",function(d,i){
+                    console.log("---------------------");
+                    console.log(i);
+                    console.log(d)
                     return yScale(d[0])-yScale(d[1]);
                 })
                 .attr("height",function(d,i){
@@ -104,7 +107,7 @@ var drawStack = function(datas,width,height)
                 })
                 .attr("width",xScale.bandwidth())
                 .attr("id",function(d,i){return "column_"+i;});
-    
+    /*
     //---------------Changing rect labels and Axis titles----------------
     rects.on("mouseover",function(data){
         var energy = data.energy;
@@ -138,14 +141,16 @@ var drawStack = function(datas,width,height)
         d3.selectAll("rect").classed("fade",false);
         d3.select("#tooltip").classed("hidden",true);
         d3.select(this).classed("selected",false);
-        /*d3.select(this).attr("height",function(d,i){
+        
+        d3.select(this).attr("height",function(d,i){
                     var local_scale = getNewYscale(graph,margins,series,"#column_"+i)
                     return 1.1*local_scale(d[0])-local_scale(d[1]);
-        });*/   
-    });
+        });  
+    });*/
     //----------------------------------------------------------------------
     
     //Makes text labels for each rect in the stack
+    /*
     groups.selectAll("text")
                 .data(function(data){return data;})
                 .enter()
@@ -167,7 +172,7 @@ var drawStack = function(datas,width,height)
                 .classed("rect_label",true)
                 .text(function(data){return getString(data);}) //currently does nothing. 
                 .classed("hidden",function(d){if(d[0]==d[1]){return true;}
-                                              else{return false;}});
+                                              else{return false;}});*/
 }
 var bindEnergyToRect = function(row) //appends energy and column data to the d3 generated series data.
 //Specifically, appends these to the rects objects inside each group in the groups object. 
@@ -357,7 +362,8 @@ var  getNewYscale = function(graph,margins,series,id)
 }
 
 //d3.json("https://blackfyrehg.github.io/Final_Project/emissions_by_sector.json");
-var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/re_stacked.json");
+//var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/re_stacked.json");
+var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/dummy_data.json");
 stackPromise.then(function(stack_data) {
     drawStack(stack_data,1200,550);
     
