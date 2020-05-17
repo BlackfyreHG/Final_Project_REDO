@@ -29,7 +29,7 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,50000000])
+                .domain([0,5000000])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
     changeXticks(margins,graph,svg,xScale);
@@ -73,6 +73,8 @@ var drawStack = function(datas,width,height)
                     return yScale(d[1]);
                 })
                 .attr("height",function(d,i){
+                    console.log(d.source);
+                    console.log("--------");
                     return yScale(d[0])-yScale(d[1]);
                 })
                 .attr("width",xScale.bandwidth())
@@ -112,7 +114,7 @@ var drawStack = function(datas,width,height)
     .on("mouseout",function(value){
         var label_id = "#label_"+this.id;
         //updateAxes("svg",xScale,yScale);
-       // setAxesTitles(margins, graph, "svg", xTitle, yTitle);
+        //setAxesTitles(margins, graph, "svg", xTitle, yTitle);
         d3.selectAll("rect").classed("fade",false);
         d3.select("#tooltip").classed("hidden",true);
         d3.select(this).classed("selected",false);
@@ -168,12 +170,18 @@ var scaleValue = function(source) //Removes inflation made to source data to mak
     else if(source == "Human"){
         return 10;
     }
+    else if(source == "Fuel"){
+        return 200;
+    }
+    else if(source == "Operation"){
+        return 200;
+    }
     else{
         return 100;
     }
 }
 
-var adjustValue = function(id) //Adjusts Accidents statistics to actual values. 
+var adjustValue = function(id) //Adjusts accidents statistics to actual values. 
 {
     if(id=="5")
     {
@@ -184,7 +192,7 @@ var adjustValue = function(id) //Adjusts Accidents statistics to actual values.
     }
 }
 
-var createAxes = function(margins,graph,target,xScale,yScale)
+var createAxes = function(margins,graph,target,xScale,yScale) //Creates the axes and draws them
 {
     // Setup axes
     var xAxis = d3.axisBottom(xScale)
@@ -200,7 +208,7 @@ var createAxes = function(margins,graph,target,xScale,yScale)
         .attr("transform","translate("+margins.left+","+0+")")
         .call(yAxis); 
     
-    d3.select(".yaxis").selectAll(".tick").select("text").text('');
+    //d3.select(".yaxis").selectAll(".tick").select("text").text('');
 }
 
 //Creates the xlabels for each column on the graph. 
@@ -287,7 +295,7 @@ var getUnits = function(source,length,data)
             title = "N.A. (This is a fixed cost)";
         }
         else {
-            title = data.data[source]/20+" k$/Year";}
+            title = data.data[source]/(scaleValue(source)*20)+" k$/Year";}
     }
     else{
         title = "k$";
