@@ -1,34 +1,6 @@
 var getString = function(data)
 {
-    var names = ["Nuclear","Coal","Oil","Natural Gas","Hydro","Wind","Solar"];
-    
-    if(data.energy=="nuclear") //checks if the top of the rectangle is the same as the bottom. 
-    {
-        string = "Nuclear";
-    }
-    else if(data.energy=="coal")
-    {
-        string = "Coal";
-    }
-    else if(data.energy=="oil")
-    {
-        string = "Oil";
-    }
-    else if(data.energy=="NG")
-    {
-        string = "Natrual Gas";
-    }
-    else if(data.energy=="hydro")
-    {
-        string = "Hydro";
-    }
-    else if(data.energy=="wind")
-    {
-        string = "Wind";
-    }
-    else{
-        string = "Solar";
-    }
+    var string = data.source+" cost";
     return string;
 } 
 
@@ -43,7 +15,7 @@ var drawStack = function(datas,width,height)
         height: screen.height - margins.top - margins.bottom,
     }
     var xTitle = "Resource";
-    var yTitle = "Cost in some amount";
+    var yTitle = "Cost in Dollars";
     
     var svg = d3.select("body").select("#visual") //svg object drawn too
         .append("svg")
@@ -57,36 +29,37 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,200])
+                .domain([0,50000000])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
-    //changeXticks(margins,graph,svg,xScale);
+    changeXticks(margins,graph,svg,xScale);
     //---------------------------------------------------
     
     //gives axis labels. 
     setAxesTitles(margins, graph, "svg", xTitle, yTitle);
-    
     var stack = d3.stack()
                   .keys(["Construction","Operation","Fuel","Human"])
                   .order(d3.stackOrderDescending); //puts order as largest to smallest.
     
     var series = stack(datas);
     var colors = d3.scaleOrdinal(d3.schemeDark2);
-    var colors2 = ["#FFD700","#FAEBD7","#4169E1","#DEB887","#2F4F4F","#696969","#6B8E23"]; //custom color set. 
+    var colors2 = ["#FFD700","#FAEBD7","#4169E1","#DEB887"]//,"#2F4F4F","#696969","#6B8E23"]; //custom color set. 
     
      console.log(datas);
      console.log(series);
+    
     //Add a group for each row of data
     var groups = svg.selectAll(".stack")
                 .data(series)
                 .enter()
                 .append("g")
                 .attr("class",function(row){
-                    bindEnergyToRect(row); //Puts the same data class into each rectangles data as well
+                    bindDataToRect(row); //Puts the same data class into each rectangles data as well
                     return row.key;})
                 .style("fill",function(d,i){
-                    return colors[i];
+                    return colors2[i];
                 });
+    
     
     //Add a rectangle for each data value
     var rects = groups.selectAll("rect")
@@ -97,29 +70,27 @@ var drawStack = function(datas,width,height)
                     return xScale(i)+1;
                 })
                 .attr("y",function(d,i){
-                    console.log("---------------------");
-                    console.log(i);
-                    console.log(d)
-                    return yScale(d[0])-yScale(d[1]);
+                    return yScale(d[1]);
                 })
                 .attr("height",function(d,i){
                     return yScale(d[0])-yScale(d[1]);
                 })
                 .attr("width",xScale.bandwidth())
                 .attr("id",function(d,i){return "column_"+i;});
-    /*
+    
     //---------------Changing rect labels and Axis titles----------------
     rects.on("mouseover",function(data){
-        var energy = data.energy;
+        var source = data.source;
         var column_id = "#"+this.id;
         var label_id = "#label_"+this.id
-        var newTitle = findTitle(column_id,"long");
-        var new_yScale = getNewYscale(graph,margins,series,column_id);
-        updateAxes("svg",xScale,new_yScale);
-        setAxesTitles(margins, graph, "svg", xTitle, newTitle);
+        
+        //var newTitle = findTitle(column_id,"long");
+        //var new_yScale = getNewYscale(graph,margins,series,column_id);
+        //updateAxes("svg",xScale,new_yScale);
+        //setAxesTitles(margins, graph, "svg", xTitle, newTitle);
+        
         d3.selectAll("rect").classed("fade",true);
         d3.selectAll(column_id).classed("fade",false);
-        
         d3.select(this).classed("selected",true);
         //d3.selectAll(label_id).classed("hidden",false);
         
@@ -131,26 +102,30 @@ var drawStack = function(datas,width,height)
             .style("left",xpos+"px")
             .style("top",ypos+"px")
             .select("#energy").text(getString(data));
-        d3.select("#tooltip").select("#size").text(suffix(data["column"])+(data.data[energy]-adjustValue(data["column"]))+" "+findTitle("#column_"+data["column"]),"abrev");
-       d3.select("#tooltip").classed("hidden",false);
+        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]-adjustValue(data["column"]))+" "
+            +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
+        
+        d3.select("#tooltip").select("#type").text("Cost Type: "+suffix(data.source));
+        d3.select("#tooltip").select("#avg").text("Average: "+getUnits(source,"abrev",data));
+        d3.select("#tooltip").classed("hidden",false);
     })
     .on("mouseout",function(value){
         var label_id = "#label_"+this.id;
-        updateAxes("svg",xScale,yScale);
-        setAxesTitles(margins, graph, "svg", xTitle, yTitle);
+        //updateAxes("svg",xScale,yScale);
+       // setAxesTitles(margins, graph, "svg", xTitle, yTitle);
         d3.selectAll("rect").classed("fade",false);
         d3.select("#tooltip").classed("hidden",true);
         d3.select(this).classed("selected",false);
         
+        /*
         d3.select(this).attr("height",function(d,i){
                     var local_scale = getNewYscale(graph,margins,series,"#column_"+i)
-                    return 1.1*local_scale(d[0])-local_scale(d[1]);
-        });  
-    });*/
+                    return 1.1*local_scale(d[0])-local_scale(d[1]);*/
+       // });  
+    });
     //----------------------------------------------------------------------
     
     //Makes text labels for each rect in the stack
-    /*
     groups.selectAll("text")
                 .data(function(data){return data;})
                 .enter()
@@ -162,8 +137,9 @@ var drawStack = function(datas,width,height)
                 })
                 .attr("y", function(data,index)
                 {
-                    var loc_Scale = getNewYscale(graph,margins,series,"#column_"+index);
-                    return loc_Scale(data[0]) - (loc_Scale(data[0])-loc_Scale(data[1]))/5;  
+                    //var loc_Scale = getNewYscale(graph,margins,series,"#column_"+index);
+                    //return loc_Scale(data[0]) - (loc_Scale(data[0])-loc_Scale(data[1]))/5;  
+                    return yScale(data[0])-(yScale(data[0])-yScale(data[1]))/5;;
                 })
                 .attr("fill","black")
                 .attr("id", function(d,i){
@@ -172,22 +148,16 @@ var drawStack = function(datas,width,height)
                 .classed("rect_label",true)
                 .text(function(data){return getString(data);}) //currently does nothing. 
                 .classed("hidden",function(d){if(d[0]==d[1]){return true;}
-                                              else{return false;}});*/
+                                              else{return false;}});
 }
-var bindEnergyToRect = function(row) //appends energy and column data to the d3 generated series data.
+var bindDataToRect = function(row) //appends energy and column data to the d3 generated series data.
 //Specifically, appends these to the rects objects inside each group in the groups object. 
 {
     for(var i = 0; i<row.length;i++)
     {
-        row[i]["energy"] = row.key;
+        row[i]["source"] = row.key;
         row[i]["column"] = i;
     }
-}
-
-var suffix = function(id)
-{
-    if(id=="4"){return "10^";}
-    else{return "";}
 }
 
 var adjustValue = function(id) //Adjusts Accidents statistics to actual values. 
@@ -223,7 +193,7 @@ var createAxes = function(margins,graph,target,xScale,yScale)
 //Creates the xlabels for each column on the graph. 
 var changeXticks = function(margins,graph,target,xScale)
 {
-    tick_labels = [["Average","Construction","Cost"],["Average","Operation","Cost"],["Avg. Fuel","Cost"],["Current Energy","Production","per year"],["Thermal","Content"],["Accidents","1970-2008","5 or more deaths"]];
+    tick_labels = [["Coal"],["Oil"],["Natrual","Gas"],["Nuclear"],["Hydro", "Electric"],["Wind"],["Solar"]];
     d3.select(".xaxis").selectAll(".tick").select("text").text('');
     var xticks = target.append("g").classed("xticks",true);
     for (var i = 1; i <=tick_labels.length;i++)
@@ -289,6 +259,29 @@ var updateAxes = function(target, xScale, yScale)
         .remove();
 }
 
+var suffix = function(source)
+{
+    if(source=="Construction"){return "Fixed";}
+    if(source==""){return "Total: ";}
+    else{return "Yearly"}
+}
+
+var getUnits = function(source,length,data)
+{
+    var title = "Error";
+   if(length=="abrev"){
+        if(source=="Construction"){ //checks if the top of the rectangle is the same as the bottom. 
+            title = "N.A. (This is a fixed cost)";
+        }
+        else {
+            title = data.data[source]/20+" $/Year";}
+    }
+    else{
+        title = "$";
+    }
+    return title;
+}
+
 var findTitle = function(id,length)
 {
     var title= "Error";
@@ -302,15 +295,14 @@ var findTitle = function(id,length)
         else if(id=="#column_4"){title = "Btu (British Thermal Units) log 10 scale";}
         else {title = "Number of Accidents";}
     }
-    else{
-        if(id=="#column_0"){ //checks if the top of the rectangle is the same as the bottom. 
-            title = "$/KW";
+    else if(length=="abrev"){
+        if(id=="Construction"){ //checks if the top of the rectangle is the same as the bottom. 
+            title = "N.A. (This is a fixed cost)";
         }
-        else if(id=="#column_1"){title = "M$/KWh";}
-        else if(id=="#column_2"){title = "$/KWh";}
-        else if(id=="#column_3"){title = "GWh";}
-        else if(id=="#column_4"){title = "Btu";}
-        else {title = "Accidents";}
+        else {title = "$/Year";}
+    }
+    else{
+        title = "$";
     }
     return title; 
 }
@@ -362,8 +354,8 @@ var  getNewYscale = function(graph,margins,series,id)
 }
 
 //d3.json("https://blackfyrehg.github.io/Final_Project/emissions_by_sector.json");
-//var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/re_stacked.json");
-var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/dummy_data.json");
+var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/re_stacked.json");
+//var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/dummy_data.json");
 stackPromise.then(function(stack_data) {
     drawStack(stack_data,1200,550);
     
