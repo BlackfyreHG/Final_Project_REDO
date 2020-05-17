@@ -15,7 +15,7 @@ var drawStack = function(datas,width,height)
         height: screen.height - margins.top - margins.bottom,
     }
     var xTitle = "Resource";
-    var yTitle = "Cost in Dollars";
+    var yTitle = "Cost in thousands of Dollars";
     
     var svg = d3.select("body").select("#visual") //svg object drawn too
         .append("svg")
@@ -29,7 +29,7 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,50000000])
+                .domain([0,5000000000])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
     changeXticks(margins,graph,svg,xScale);
@@ -274,10 +274,10 @@ var getUnits = function(source,length,data)
             title = "N.A. (This is a fixed cost)";
         }
         else {
-            title = data.data[source]/20+" $/Year";}
+            title = data.data[source]/20+" k$/Year";}
     }
     else{
-        title = "$";
+        title = "k$";
     }
     return title;
 }
@@ -299,10 +299,10 @@ var findTitle = function(id,length)
         if(id=="Construction"){ //checks if the top of the rectangle is the same as the bottom. 
             title = "N.A. (This is a fixed cost)";
         }
-        else {title = "$/Year";}
+        else {title = "k$/Year";}
     }
     else{
-        title = "$";
+        title = "k$";
     }
     return title; 
 }
