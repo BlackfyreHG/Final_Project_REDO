@@ -107,7 +107,7 @@ var drawStack = function(datas,width,height)
         //d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]/scaleValue(source))+" "
             //+getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
         
-        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]))+" "
+        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source])+" "
             +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
         
         d3.select("#tooltip").select("#type").text("Cost Type: "+suffix(data.source));
@@ -174,10 +174,10 @@ var scaleValue = function(source) //Removes inflation made to source data to mak
         return 10;
     }
     else if(source == "Fuel"){
-        return 200;
+        return 1;
     }
     else if(source == "Operation"){
-        return 200;
+        return 1;
     }
     else{
         return 100;
@@ -299,7 +299,7 @@ var getUnits = function(source,length,data)
         }
         else {
             //title = data.data[source]/(scaleValue(source)*20)+" k$/Year";}
-            title = data.data[source]+" $/Year";
+            title = data.data[source]/20+" $/Year";
         }
     }
     else{
