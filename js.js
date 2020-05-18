@@ -15,7 +15,7 @@ var drawStack = function(datas,width,height)
         height: screen.height - margins.top - margins.bottom,
     }
     var xTitle = "Resource";
-    var yTitle = "Cost in thousands of Dollars";
+    var yTitle = "Cost in Millions of Dollars";
     
     var svg = d3.select("body").select("#visual") //svg object drawn too
         .append("svg")
@@ -29,7 +29,7 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,12000000000])
+                .domain([0,12000])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
     changeXticks(margins,graph,svg,xScale);
@@ -43,7 +43,7 @@ var drawStack = function(datas,width,height)
     
     var series = stack(datas);
     var colors = d3.scaleOrdinal(d3.schemeDark2);
-    var colors2 = ["#FFD700","#6B8E23","#696969","#DEB887"]//"#2F4F4F",,"#FAEBD7","#4169E1"]; //custom color set. 
+    var colors2 = ["#FFA500","#6B8E23","#696969","#FF0000"]///"#DEB887"  "#2F4F4F",,"#FAEBD7","#4169E1"]; //custom color set. 
     
      console.log(datas);
      console.log(series);
@@ -104,11 +104,11 @@ var drawStack = function(datas,width,height)
             .style("left",xpos+"px")
             .style("top",ypos+"px")
             .select("#energy").text(getString(data));
-        //d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]/scaleValue(source))+" "
-            //+getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
-        
-        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source])+" "
+        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]/scaleValue(source))+" "
             +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
+        
+        /*d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source])+" "
+            +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.*/
         
         d3.select("#tooltip").select("#type").text("Cost Type: "+suffix(data.source));
         d3.select("#tooltip").select("#avg").text("Average: "+getUnits(source,"abrev",data));
@@ -298,8 +298,8 @@ var getUnits = function(source,length,data)
             title = "N.A. (This is a fixed cost)";
         }
         else {
-            //title = data.data[source]/(scaleValue(source)*20)+" k$/Year";}
-            title = data.data[source]/20+" $/Year";
+            title = data.data[source]/(scaleValue(source)*20)+" k$/Year";
+            //title = data.data[source]/20+" $/Year";
         }
     }
     else{
