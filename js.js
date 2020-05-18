@@ -152,8 +152,11 @@ var drawStack = function(datas,width,height)
                  })
                 .classed("rect_label",true)
                 .text(function(data){return getString(data);}) //currently does nothing. 
-                .classed("hidden",function(d){if(d[0]==d[1]){return true;}
-                                              else{return false;}});
+                .classed("hidden",function(d){
+                    if(d[0]==d[1]){return true;}
+                    else if(d[1]-d[0] < 5){return true;}
+                    else{return false;}
+                });
 }
 var bindDataToRect = function(row) //appends energy and column data to the d3 generated series data.
 //Specifically, appends these to the rects objects inside each group in the groups object. 
