@@ -29,7 +29,7 @@ var drawStack = function(datas,width,height)
                 .paddingInner(0.05);
     
     var yScale = d3.scaleLinear()
-                .domain([0,5000000])
+                .domain([0,12000000000])
                 .range([graph.height, margins.bottom]);
     createAxes(margins,graph,svg,xScale,yScale);
     changeXticks(margins,graph,svg,xScale);
@@ -104,7 +104,10 @@ var drawStack = function(datas,width,height)
             .style("left",xpos+"px")
             .style("top",ypos+"px")
             .select("#energy").text(getString(data));
-        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]/scaleValue(source))+" "
+        //d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]/scaleValue(source))+" "
+            //+getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
+        
+        d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]))+" "
             +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
         
         d3.select("#tooltip").select("#type").text("Cost Type: "+suffix(data.source));
@@ -295,10 +298,12 @@ var getUnits = function(source,length,data)
             title = "N.A. (This is a fixed cost)";
         }
         else {
-            title = data.data[source]/(scaleValue(source)*20)+" k$/Year";}
+            //title = data.data[source]/(scaleValue(source)*20)+" k$/Year";}
+            title = data.data[source]+" $/Year";
+        }
     }
     else{
-        title = "k$";
+        title = "$";
     }
     return title;
 }
