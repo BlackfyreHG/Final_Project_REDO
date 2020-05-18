@@ -43,7 +43,7 @@ var drawStack = function(datas,width,height)
     
     var series = stack(datas);
     var colors = d3.scaleOrdinal(d3.schemeDark2);
-    var colors2 = ["#FFD700","#FAEBD7","#4169E1","#DEB887"]//,"#2F4F4F","#696969","#6B8E23"]; //custom color set. 
+    var colors2 = ["#FFD700","#6B8E23","#696969","#DEB887"]//"#2F4F4F",,"#FAEBD7","#4169E1"]; //custom color set. 
     
      console.log(datas);
      console.log(series);
