@@ -33,6 +33,12 @@ h1{
     border-style:groove;
 }
 
+#assumtions {
+    border-style:dotted;
+    border-color:brown;
+    color:brown;
+}
+
 #tooltip {
     position: absolute;
     right: 20px;

@@ -14,7 +14,7 @@ var drawStack = function(datas,width,height)
         width: screen.width - margins.left - margins.right,
         height: screen.height - margins.top - margins.bottom,
     }
-    var xTitle = "Resource";
+    var xTitle = "Energy Source";
     var yTitle = "Cost in Millions of Dollars";
     
     var svg = d3.select("body").select("#visual") //svg object drawn too
@@ -301,12 +301,12 @@ var getUnits = function(source,length,data)
             title = "N.A. (This is a fixed cost)";
         }
         else {
-            title = data.data[source]/(scaleValue(source)*20)+" k$/Year";
+            title = Math.round(data.data[source]/(scaleValue(source)*20))+" M$/Year";
             //title = data.data[source]/20+" $/Year";
         }
     }
     else{
-        title = "$";
+        title = "M$";
     }
     return title;
 }
