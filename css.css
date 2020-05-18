@@ -43,7 +43,7 @@ h1{
     position: absolute;
     right: 20px;
     padding: 10px;
-    width: 150px;
+    width: 155px;
     background-color: #F0FFF0;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -55,6 +55,7 @@ h1{
 }
 .rect_label{
     pointer-events:none;
+    font-size:13;
 }
 #tooltip #energy {
     font-weight:bold;
@@ -70,11 +71,13 @@ h1{
     font-size:20;
     font-weight:bold; 
 }
+ 
 .hidden {
     display: none;
 }
+
 .selected {
- 
+
 }
 
 #xticks {

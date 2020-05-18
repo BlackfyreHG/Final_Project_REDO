@@ -98,18 +98,14 @@ var drawStack = function(datas,width,height)
         
         //Tooltip
         var xpos = parseFloat(d3.select(this).attr("x"))+xScale.bandwidth()/2+85;
-        var ypos = parseFloat(d3.select(this).attr("y"))+10+276;
+        var ypos = parseFloat(d3.select(this).attr("y"))+93+276;
         d3.select("#tooltip")
             .attr("id","tooltip")
             .style("left",xpos+"px")
             .style("top",ypos+"px")
             .select("#energy").text(getString(data));
         d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source]/scaleValue(source))+" "
-            +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.
-        
-        /*d3.select("#tooltip").select("#size").text(suffix("")+(data.data[source])+" "
-            +getUnits(source,"Non_Argument",data)); //The argument dollars is a dummy.*/
-        
+            +getUnits(source,"Non_Argument",data)); //The argument "Non_Argument is a dummy string.
         d3.select("#tooltip").select("#type").text("Cost Type: "+suffix(data.source));
         d3.select("#tooltip").select("#avg").text("Average: "+getUnits(source,"abrev",data));
         d3.select("#tooltip").classed("hidden",false);
@@ -122,11 +118,10 @@ var drawStack = function(datas,width,height)
         d3.select("#tooltip").classed("hidden",true);
         d3.select(this).classed("selected",false);
         
-        /*
-        d3.select(this).attr("height",function(d,i){
-                    var local_scale = getNewYscale(graph,margins,series,"#column_"+i)
-                    return 1.1*local_scale(d[0])-local_scale(d[1]);*/
-       // });  
+        
+        /*d3.select(this).attr("height",function(d,i){
+                    return 1.1*(yScale(d[0])-yScale(d[1]));
+        });  */
     });
     //----------------------------------------------------------------------
     
@@ -236,9 +231,6 @@ var changeXticks = function(margins,graph,target,xScale)
                     .attr("fill","black")
                     .text(tick_labels[i-1][j])
                     .attr("id","xticks");
-            /*
-                    .style("font-size",15)
-                    .style("font-family","monospace");*/
         }
     }
 }
@@ -293,16 +285,15 @@ var suffix = function(source)
     else{return "Yearly"}
 }
 
-var getUnits = function(source,length,data)
+var getUnits = function(source,length,data) //Gets the units for the average costs. Scales them to actual values if necessary. 
 {
     var title = "Error";
    if(length=="abrev"){
         if(source=="Construction"){ //checks if the top of the rectangle is the same as the bottom. 
-            title = "N.A. (This is a fixed cost)";
+            title = "N.A.";
         }
         else {
             title = Math.round(data.data[source]/(scaleValue(source)*20))+" M$/Year";
-            //title = data.data[source]/20+" $/Year";
         }
     }
     else{
@@ -386,7 +377,7 @@ var  getNewYscale = function(graph,margins,series,id)
 var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/re_stacked.json");
 //var stackPromise = d3.json("https://blackfyrehg.github.io/Final_Project_REDO/dummy_data.json");
 stackPromise.then(function(stack_data) {
-    drawStack(stack_data,1200,550);
+    drawStack(stack_data,1220,550);
     
 }, function(err) {
     console.log(err);
